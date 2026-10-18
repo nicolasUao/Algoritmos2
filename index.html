@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Ejercicio de Colas</title>
+</head>
+<body>
+    <section class="contenedor">
+        <h2>Cola del ATM</h2>
+
+        <form id="formPersona">
+            <input type="text" id="inputNombre" placeholder="Nombre" required />
+            <input type="text" id="inputMonto" placeholder="Monto a retirar" required />
+            <button type="submit">Agregar a la cola</button>
+        </form>
+
+        <h3>Cola ordenada por fecha de llegada</h3>
+        <div id="colaATM"></div>
+    </section>
+</body>
+<script src="script.js"></script>
+</html>
