@@ -1,146 +1,137 @@
 
 import { useState } from "react";
-import Tree from "react-d3-tree";
-import { BinaryTree } from "./BinaryTree";
+import { menuData } from "./menuData";
 import "./index.css";
 
-const tree = new BinaryTree();
+function Inicio() {
+    return <h2>Bienvenido al panel de administración</h2>;
+}
 
-// numeros test
-[50, 30, 70, 20, 40, 60, 80].forEach(number => {
-    tree.insert(number);
-});
+function Productos() {
+    return <h2>Administración de productos</h2>;
+}
 
-function App() {
-    const [number, setNumber] = useState("");
-    const [message, setMessage] = useState("");
+function Baterias() {
+    return <h2>Catálogo de baterías</h2>;
+}
 
-    const [treeData, setTreeData] = useState([
-        tree.toD3Tree()
-    ]);
+function Accesorios() {
+    return <h2>Catálogo de accesorios</h2>;
+}
 
-    const [traversals, setTraversals] = useState(null);
+function Servicios() {
+    return <h2>Administración de servicios</h2>;
+}
 
-    function handleInsert() {
-        if (number.trim() === "") {
-            setMessage("Ingresa un número.");
-            return;
-        }
+function Instalacion() {
+    return <h2>Servicio de instalación</h2>;
+}
 
-        const value = Number(number);
+function Diagnostico() {
+    return <h2>Servicio de diagnóstico</h2>;
+}
 
-        if (!Number.isFinite(value)) {
-            setMessage("Ingresa un número válido.");
-            return;
-        }
+const components = {
+    Inicio,
+    Productos,
+    Baterias,
+    Accesorios,
+    Servicios,
+    Instalacion,
+    Diagnostico
+};
 
-        const inserted = tree.insert(value);
+function MenuItem({ item, onNavigate, activeLink }) {
+    const [expanded, setExpanded] = useState(false);
 
-        if (!inserted) {
-            setMessage("Ese número ya existe.");
-            return;
-        }
-
-        setTreeData([tree.toD3Tree()]);
-        setMessage(`Número ${value} insertado correctamente.`);
-        setNumber("");
-        setTraversals(null);
-    }
-
-    function handleSearch() {
-        if (number.trim() === "") {
-            setMessage("Ingresa un número para buscar.");
-            return;
-        }
-
-        const value = Number(number);
-
-        if (!Number.isFinite(value)) {
-            setMessage("Ingresa un número válido.");
-            return;
-        }
-
-        const found = tree.search(value);
-
-        setMessage(
-            found
-                ? `El número ${value} sí existe en el árbol.`
-                : `El número ${value} no existe en el árbol.`
-        );
-    }
-
-    function handleTraversals() {
-        setTraversals({
-            preOrder: tree.preOrder(),
-            inOrder: tree.inOrder(),
-            postOrder: tree.postOrder()
-        });
-    }
+    const hasChildren = item.children.length > 0;
 
     return (
-        <main className="app">
-            <h1>Árbol binario de búsqueda</h1>
+        <li className="menu-item">
+            <div className="menu-row">
+                <a
+                    href={item.link}
+                    className={
+                        activeLink === item.link ? "active" : ""
+                    }
+                    onClick={event => {
+                        event.preventDefault();
+                        onNavigate(item);
+                    }}
+                >
+                    {item.title}
+                </a>
 
-            <p>
-                Inserta números, búscalos y observa la estructura
-                del árbol.
-            </p>
+                {hasChildren && (
+                    <button
+                        className="expand-button"
+                        onClick={() => setExpanded(!expanded)}
+                        aria-expanded={expanded}
+                        aria-label={
+                            expanded
+                                ? `Cerrar ${item.title}`
+                                : `Abrir ${item.title}`
+                        }
+                    >
+                        {expanded ? "−" : "+"}
+                    </button>
+                )}
+            </div>
 
-            <section className="controls">
-                <input
-                    type="number"
-                    value={number}
-                    onChange={event => setNumber(event.target.value)}
-                    placeholder="Escribe un número"
-                />
-
-                <button onClick={handleInsert}>
-                    Insertar
-                </button>
-
-                <button onClick={handleSearch}>
-                    Buscar
-                </button>
-
-                <button onClick={handleTraversals}>
-                    Mostrar recorridos
-                </button>
-            </section>
-
-            <p className="message" role="status">{message}</p>
-
-            <section className="tree-container">
-                <Tree
-                    data={treeData}
-                    orientation="vertical"
-                    pathFunc="elbow"
-                    translate={{ x: 400, y: 70 }}
-                    zoomable
-                    collapsible={false}
-                />
-            </section>
-
-            {traversals && (
-                <section className="results">
-                    <h2>Recorridos del árbol</h2>
-
-                    <p>
-                        <strong>PreOrder:</strong>{" "}
-                        {traversals.preOrder.join(", ")}
-                    </p>
-
-                    <p>
-                        <strong>InOrder:</strong>{" "}
-                        {traversals.inOrder.join(", ")}
-                    </p>
-
-                    <p>
-                        <strong>PostOrder:</strong>{" "}
-                        {traversals.postOrder.join(", ")}
-                    </p>
-                </section>
+            {hasChildren && expanded && (
+                <ul className="submenu">
+                    {item.children.map(child => (
+                        <MenuItem
+                            key={child.link}
+                            item={child}
+                            onNavigate={onNavigate}
+                            activeLink={activeLink}
+                        />
+                    ))}
+                </ul>
             )}
-        </main>
+        </li>
+    );
+}
+
+function App() {
+    const [activeItem, setActiveItem] = useState(menuData[0]);
+
+    function handleNavigate(item) {
+        setActiveItem(item);
+    }
+
+    const ActiveComponent = components[activeItem.component];
+
+    return (
+        <div className="layout">
+            <aside className="sidebar">
+                <h2>Mi sistema</h2>
+
+                <ul className="menu">
+                    {menuData.map(item => (
+                        <MenuItem
+                            key={item.link}
+                            item={item}
+                            onNavigate={handleNavigate}
+                            activeLink={activeItem.link}
+                        />
+                    ))}
+                </ul>
+            </aside>
+
+            <main className="content">
+                <p className="breadcrumb">
+                    Página actual: {activeItem.title}
+                </p>
+
+                <ActiveComponent />
+
+                <p>
+                    Enlace seleccionado: {activeItem.link}
+                </p>
+            </main>
+        </div>
     );
 }
 
