@@ -1,0 +1,44 @@
+.app {
+  max-width: 600px;
+  margin: 40px auto;
+  font-family: sans-serif;
+  padding: 0 16px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.formulario label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.formulario input {
+  padding: 6px;
+  font-size: 14px;
+}
+
+.pila ul {
+  list-style: none;
+  padding: 0;
+}
+
+.pila li {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
