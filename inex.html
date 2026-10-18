@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listas</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <h1>Ejercicios de <strong>LISTAS<strong></h1>
+
+    <!-- Lista de canciones-->
+    <section class="contenedor">
+      <h2>Lista de canciones</h2>
+
+      <div id="cancionActual">No hay canción seleccionada</div>
+
+      <div class="botones">
+        <button onclick="siguienteCancion()">Siguiente</button>
+      </div>
+
+      <h3>Canciones</h3>
+
+      <div id="listaCanciones"></div>
+    </section>
+
+    <!-- Historial de paginas-->
+    <section class="contenedor">
+      <h2>Historial de páginas</h2>
+
+      <div id="paginaActual">No hay página seleccionada</div>
+
+      <div class="botones">
+        <button onclick="paginaAnterior()">← Atrás</button>
+
+        <button onclick="paginaSiguiente()">Adelante →</button>
+      </div>
+
+      <h3>Historial</h3>
+
+      <div id="historial"></div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>
